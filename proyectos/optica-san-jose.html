@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Óptica San José — Tu visión, nuestra pasión</title>
+<style>
+/* ── VARIABLES ── */
+:root {
+  --azul: #1a3a6b;
+  --azul-claro: #2563eb;
+  --azul-muy-claro: #93c5fd;
+  --azul-pale: #e8f0fe;
+  --negro: #0a1628;
+  --blanco: #ffffff;
+  --gris: #64748b;
+  --gris-linea: #dde6f5;
+  --fondo: #f8faff;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: var(--blanco);
+  color: var(--negro);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 5vw;
+  background: rgba(10,22,40,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--blanco);
+  letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--azul-muy-claro); }
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--blanco); }
+.nav-cta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blanco);
+  text-decoration: none;
+  background: var(--azul-claro);
+  padding: 0.55rem 1.4rem;
+  border-radius: 2rem;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: #1d4ed8; }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--blanco);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.2s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: var(--negro);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--blanco);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.mobile-menu .m-cta {
+  font-size: 1rem;
+  background: var(--azul-claro);
+  padding: 0.85rem 2.5rem;
+  border-radius: 2rem;
+  margin-top: 1rem;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  background: linear-gradient(150deg, #0a1628 0%, #0f2755 55%, #1a3a6b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 6vw 5rem;
+  position: relative;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--azul-muy-claro);
+  background: rgba(147,197,253,0.1);
+  border: 1px solid rgba(147,197,253,0.25);
+  padding: 0.4rem 1.2rem;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+.hero-titulo {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--blanco);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+.hero-titulo em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--azul-muy-claro);
+}
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  max-width: 480px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.75;
+}
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-azul {
+  display: inline-block;
+  background: var(--azul-claro);
+  color: var(--blanco);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1rem 2.2rem;
+  border-radius: 2rem;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.5);
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-azul:hover { background: #1d4ed8; transform: translateY(-2px); }
+.btn-borde {
+  display: inline-block;
+  color: var(--blanco);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 1rem 2.2rem;
+  border-radius: 2rem;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-borde:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.7); }
+
+/* Lente deco SVG */
+.hero-deco {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-deco span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.scroll-dot {
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.4); }
+}
+
+/* ── STATS ── */
+#stats {
+  background: var(--negro);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.stat {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.stat:last-child { border-right: none; }
+.stat-n {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--blanco);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-n span { color: var(--azul-muy-claro); }
+.stat-l {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin-top: 0.5rem;
+}
+
+/* ── SECCIONES COMUNES ── */
+section { padding: 5rem 6vw; }
+.sec-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--azul-claro);
+  margin-bottom: 0.75rem;
+}
+.sec-titulo {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--negro);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 3.5rem;
+}
+.sec-titulo.blanco { color: var(--blanco); }
+
+/* ── SERVICIOS ── */
+#servicios { background: var(--fondo); }
+.servicios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.serv-card {
+  background: var(--blanco);
+  border: 1.5px solid var(--gris-linea);
+  border-radius: 1.25rem;
+  padding: 2rem 1.75rem;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.serv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(10,22,40,0.1);
+  border-color: var(--azul-muy-claro);
+}
+.serv-icon {
+  width: 50px; height: 50px;
+  background: var(--azul-pale);
+  border-radius: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.serv-icon svg { width: 24px; height: 24px; stroke: var(--azul-claro); fill: none; stroke-width: 1.8; }
+.serv-nombre {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 0.6rem;
+}
+.serv-desc {
+  font-size: 0.88rem;
+  color: var(--gris);
+  line-height: 1.7;
+}
+.serv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--azul-claro);
+  text-decoration: none;
+  margin-top: 1.25rem;
+}
+.serv-link svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.5; fill: none; }
+
+/* ── FRANJA AZUL ── */
+#franja {
+  background: linear-gradient(135deg, var(--negro), #0f2755, var(--azul));
+  padding: 5rem 6vw;
+  text-align: center;
+}
+.franja-cita {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--blanco);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+.franja-autor {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--azul-muy-claro);
+  margin-top: 1.5rem;
+}
+
+/* ── PRODUCTOS ── */
+#productos { background: var(--blanco); }
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.prod-card {
+  border: 1.5px solid var(--gris-linea);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.prod-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(10,22,40,0.12);
+}
+.prod-visual {
+  height: 170px;
+  display: flex; align-items: center; justify-content: center;
+}
+.prod-visual.v1 { background: linear-gradient(135deg, #e8f0fe, #c7d8fc); }
+.prod-visual.v2 { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.prod-visual.v3 { background: linear-gradient(135deg, #eff6ff, #dde6f5); }
+.prod-visual.v4 { background: linear-gradient(135deg, #e0ecff, #b8d0f8); }
+.prod-visual svg { width: 90px; height: 55px; }
+.prod-info { padding: 1.25rem 1.5rem; }
+.prod-nombre {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--negro);
+  margin-bottom: 0.3rem;
+}
+.prod-desc { font-size: 0.82rem; color: var(--gris); line-height: 1.6; }
+.prod-badge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--azul-claro);
+  background: var(--azul-pale);
+  padding: 0.28rem 0.8rem;
+  border-radius: 2rem;
+}
+
+/* ── CONTACTO ── */
+#contacto { background: var(--negro); }
+.contacto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto 3rem;
+}
+.cont-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.cont-item svg {
+  width: 22px; height: 22px; flex-shrink: 0;
+  stroke: var(--azul-muy-claro); fill: none; stroke-width: 1.8;
+  margin-top: 2px;
+}
+.cont-item h4 { font-size: 0.88rem; font-weight: 700; color: var(--blanco); margin-bottom: 0.3rem; }
+.cont-item p { font-size: 0.82rem; color: var(--gris); line-height: 1.6; }
+
+.form-wrap { max-width: 520px; margin: 0 auto; }
+.form-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-campo { display: flex; flex-direction: column; }
+.form-campo label {
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gris); margin-bottom: 0.4rem;
+}
+.form-campo input,
+.form-campo textarea,
+.form-campo select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0.6rem;
+  padding: 0.85rem 1rem;
+  color: var(--blanco);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.25s;
+  -webkit-appearance: none;
+}
+.form-campo input:focus,
+.form-campo textarea:focus,
+.form-campo select:focus { border-color: var(--azul-claro); }
+.form-campo textarea { resize: vertical; min-height: 100px; }
+.form-full { grid-column: 1 / -1; }
+.form-campo select option { background: #0f2755; }
+.btn-enviar {
+  width: 100%;
+  background: var(--azul-claro);
+  color: var(--blanco);
+  border: none;
+  border-radius: 0.7rem;
+  padding: 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+  transition: background 0.2s;
+}
+.btn-enviar:hover { background: #1d4ed8; }
+
+/* ── FOOTER ── */
+footer {
+  background: #060e1a;
+  padding: 2rem 6vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-logo { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.5); }
+.footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+
+/* ── REVEAL ON SCROLL (mejora opcional) ── */
+.reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.oculto {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  nav { padding: 0.9rem 5vw; }
+
+  #hero { padding: 6rem 6vw 5rem; min-height: 100svh; }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-azul, .btn-borde { text-align: center; }
+
+  #stats { grid-template-columns: 1fr 1fr; }
+  .stat { padding: 2rem 1rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+  .stat:last-child { grid-column: 1 / -1; border-bottom: none; }
+
+  section { padding: 4rem 5vw; }
+  .servicios-grid, .prod-grid, .contacto-grid { grid-template-columns: 1fr; }
+  .form-fila { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 420px) {
+  .hero-titulo { font-size: 2.4rem; }
+}
+
+/* ══════════════════════════════════════
+   ANIMACIONES — se activan solo cuando
+   JS agrega la clase .animado al body
+   (garantiza que contenido ya es visible)
+══════════════════════════════════════ */
+
+/* Hero: entrada de elementos */
+.animado .hero-badge {
+  animation: fadeSlide 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+.animado .hero-titulo {
+  animation: fadeSlide 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s both;
+}
+.animado .hero-sub {
+  animation: fadeSlide 0.8s cubic-bezier(0.16,1,0.3,1) 0.6s both;
+}
+.animado .hero-btns {
+  animation: fadeSlide 0.8s cubic-bezier(0.16,1,0.3,1) 0.75s both;
+}
+.animado .hero-deco {
+  animation: fadeIn 1s ease 1.1s both;
+}
+
+/* Nav logo */
+.animado nav .nav-logo {
+  animation: fadeSlide 0.6s ease 0.1s both;
+}
+
+/* Stats counter pop */
+.animado .stat-n {
+  animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.animado .stat:nth-child(1) .stat-n { animation-delay: 0.1s; }
+.animado .stat:nth-child(2) .stat-n { animation-delay: 0.25s; }
+.animado .stat:nth-child(3) .stat-n { animation-delay: 0.4s; }
+
+/* Reveal on scroll mejorado */
+.animado .reveal {
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16,1,0.3,1);
+}
+.animado .reveal.oculto {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+/* Franja cita */
+.animado #franja .reveal {
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Cards de servicio: hover lift más pronunciado */
+.animado .serv-card {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+.animado .serv-card:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
+/* Productos: hover más suave */
+.animado .prod-card {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+}
+
+/* Botones: micro-interacciones */
+.animado .btn-azul {
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.animado .btn-azul:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(37,99,235,0.55);
+}
+.animado .btn-borde {
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.animado .btn-borde:hover { transform: translateY(-3px); }
+
+/* Íconos de servicios: rotación sutil en hover */
+.animado .serv-icon {
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;
+}
+.animado .serv-card:hover .serv-icon {
+  transform: scale(1.15) rotate(-5deg);
+  background: #d1e3ff;
+}
+
+/* Pulse en scroll-dot */
+.animado .scroll-dot {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicios" class="mlink">Servicios</a>
+  <a href="#productos" class="mlink">Productos</a>
+  <a href="#contacto" class="mlink">Contacto</a>
+  <a href="#contacto" class="m-cta mlink">Turno online</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Óptica <span>San José</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Turno online</a>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div>
+    <div class="hero-badge">Desde 1998 · Excelencia óptica</div>
+    <h1 class="hero-titulo">Ver el mundo<br>con <em>claridad</em></h1>
+    <p class="hero-sub">Cuidamos tu visión con tecnología de vanguardia, atención personalizada y los mejores marcos del mercado.</p>
+    <div class="hero-btns">
+      <a href="#contacto" class="btn-azul">Sacar turno</a>
+      <a href="#servicios" class="btn-borde">Ver servicios</a>
+    </div>
+  </div>
+  <div class="hero-deco">
+    <span>Descubrir</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stat reveal">
+    <div class="stat-n">25<span>+</span></div>
+    <div class="stat-l">Años de experiencia</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n">8.000<span>+</span></div>
+    <div class="stat-l">Pacientes atendidos</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n">98<span>%</span></div>
+    <div class="stat-l">Satisfacción</div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div style="text-align:center; margin-bottom:0.5rem">
+    <span class="sec-tag reveal">Lo que hacemos</span>
+  </div>
+  <h2 class="sec-titulo" style="text-align:center" class="reveal">Servicios integrales<br>para tu visión</h2>
+  <div class="servicios-grid">
+
+    <div class="serv-card reveal">
+      <div class="serv-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>
+      </div>
+      <div class="serv-nombre">Examen visual completo</div>
+      <p class="serv-desc">Diagnóstico profesional de tu salud visual con equipos de última generación. Rápido, preciso y sin dolor.</p>
+      <a href="#contacto" class="serv-link">Reservar turno <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="serv-card reveal">
+      <div class="serv-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="5"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="12" r="2"/></svg>
+      </div>
+      <div class="serv-nombre">Lentes de contacto</div>
+      <p class="serv-desc">Adaptación y seguimiento personalizado de lentes blandas, rígidas y especiales para cada necesidad.</p>
+      <a href="#contacto" class="serv-link">Consultar <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="serv-card reveal">
+      <div class="serv-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="serv-nombre">Lentes oftálmicos</div>
+      <p class="serv-desc">Multifocales, antirreflejo, fotocromáticos y más. Elaboramos tus lentes en el día con las mejores marcas.</p>
+      <a href="#contacto" class="serv-link">Ver opciones <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="serv-card reveal">
+      <div class="serv-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div class="serv-nombre">Control pediátrico</div>
+      <p class="serv-desc">Revisiones para niños en un ambiente cómodo y amigable. Detectamos problemas visuales a tiempo.</p>
+      <a href="#contacto" class="serv-link">Más información <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FRANJA -->
+<section id="franja">
+  <p class="franja-cita reveal">"La visión es el arte de ver lo que es invisible para los demás."</p>
+  <p class="franja-autor reveal">— Jonathan Swift · Óptica San José, tu salud visual primero</p>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <div style="text-align:center; margin-bottom:0.5rem">
+    <span class="sec-tag reveal">Catálogo</span>
+  </div>
+  <h2 class="sec-titulo" style="text-align:center" class="reveal">Marcos para cada<br>estilo de vida</h2>
+  <div class="prod-grid">
+
+    <div class="prod-card reveal">
+      <div class="prod-visual v1">
+        <svg viewBox="0 0 120 60" fill="none"><rect x="5" y="20" width="45" height="22" rx="11" stroke="#1a3a6b" stroke-width="2.5"/><rect x="70" y="20" width="45" height="22" rx="11" stroke="#1a3a6b" stroke-width="2.5"/><line x1="50" y1="31" x2="70" y2="31" stroke="#1a3a6b" stroke-width="2.5"/><line x1="1" y1="28" x2="5" y2="28" stroke="#1a3a6b" stroke-width="2.5" stroke-linecap="round"/><line x1="115" y1="28" x2="119" y2="28" stroke="#1a3a6b" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-nombre">Clásicos acetato</div>
+        <p class="prod-desc">Marcos redondos y cuadrados en acetato premium. Atemporales y versátiles.</p>
+        <span class="prod-badge">Más vendidos</span>
+      </div>
+    </div>
+
+    <div class="prod-card reveal">
+      <div class="prod-visual v2">
+        <svg viewBox="0 0 120 60" fill="none"><rect x="5" y="18" width="48" height="26" rx="5" stroke="#1a3a6b" stroke-width="2"/><rect x="67" y="18" width="48" height="26" rx="5" stroke="#1a3a6b" stroke-width="2"/><line x1="53" y1="31" x2="67" y2="31" stroke="#1a3a6b" stroke-width="2"/><line x1="1" y1="26" x2="5" y2="26" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/><line x1="115" y1="26" x2="119" y2="26" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-nombre">Titanio sport</div>
+        <p class="prod-desc">Ultra livianos, resistentes y modernos. Perfectos para un lifestyle activo.</p>
+        <span class="prod-badge">Novedad</span>
+      </div>
+    </div>
+
+    <div class="prod-card reveal">
+      <div class="prod-visual v3">
+        <svg viewBox="0 0 120 60" fill="none"><ellipse cx="30" cy="31" rx="24" ry="18" stroke="#1a3a6b" stroke-width="2"/><ellipse cx="90" cy="31" rx="24" ry="18" stroke="#1a3a6b" stroke-width="2"/><line x1="54" y1="31" x2="66" y2="31" stroke="#1a3a6b" stroke-width="2"/><line x1="2" y1="28" x2="6" y2="28" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/><line x1="114" y1="28" x2="118" y2="28" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-nombre">Aviador vintage</div>
+        <p class="prod-desc">El icónico estilo aviador actualizado. Elegancia clásica para rostros modernos.</p>
+        <span class="prod-badge">Colección</span>
+      </div>
+    </div>
+
+    <div class="prod-card reveal">
+      <div class="prod-visual v4">
+        <svg viewBox="0 0 120 60" fill="none"><path d="M5 22 Q5 10 17 10 L43 10 Q55 10 55 22 L55 40 Q55 52 43 52 L17 52 Q5 52 5 40 Z" stroke="#1a3a6b" stroke-width="2"/><path d="M65 22 Q65 10 77 10 L103 10 Q115 10 115 22 L115 40 Q115 52 103 52 L77 52 Q65 52 65 40 Z" stroke="#1a3a6b" stroke-width="2"/><line x1="55" y1="31" x2="65" y2="31" stroke="#1a3a6b" stroke-width="2"/><line x1="1" y1="28" x2="5" y2="28" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/><line x1="115" y1="28" x2="119" y2="28" stroke="#1a3a6b" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prod-info">
+        <div class="prod-nombre">Wayfarer moderno</div>
+        <p class="prod-desc">Forma trapezoidal contemporánea. El favorito de las nuevas generaciones.</p>
+        <span class="prod-badge">Tendencia</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div style="text-align:center; margin-bottom:0.5rem">
+    <span class="sec-tag">Encontranos</span>
+  </div>
+  <h2 class="sec-titulo blanco" style="text-align:center">Sacá tu turno<br>hoy mismo</h2>
+
+  <div class="contacto-grid">
+    <div class="cont-item reveal">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <div><h4>Dirección</h4><p>Av. San Martín 1245<br>Local A, Centro</p></div>
+    </div>
+    <div class="cont-item reveal">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.14 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.25 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <div><h4>Teléfono</h4><p>+54 9 362 400-0000<br>Lun–Sáb: 9 a 20 hs</p></div>
+    </div>
+    <div class="cont-item reveal">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div><h4>Email</h4><p>info@opticasanjose.com<br>Respondemos en 24 hs</p></div>
+    </div>
+  </div>
+
+  <div class="form-wrap">
+    <div class="form-fila">
+      <div class="form-campo">
+        <label>Nombre</label>
+        <input type="text" placeholder="Tu nombre">
+      </div>
+      <div class="form-campo">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="362 400-0000">
+      </div>
+    </div>
+    <div class="form-fila">
+      <div class="form-campo form-full">
+        <label>Servicio</label>
+        <select>
+          <option value="">Seleccioná un servicio</option>
+          <option>Examen visual completo</option>
+          <option>Lentes de contacto</option>
+          <option>Lentes oftálmicos</option>
+          <option>Control pediátrico</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-fila">
+      <div class="form-campo form-full">
+        <label>Mensaje (opcional)</label>
+        <textarea placeholder="¿Alguna consulta adicional?"></textarea>
+      </div>
+    </div>
+    <button class="btn-enviar">Solicitar turno →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Óptica San José</div>
+  <p class="footer-copy">© 2025 Óptica San José · Todos los derechos reservados</p>
+</footer>
+
+<script>
+// ── Activar animaciones DESPUÉS de que la página ya cargó ──
+// Así el contenido siempre es visible; las animaciones son mejora encima
+window.addEventListener('load', () => {
+  requestAnimationFrame(() => {
+    document.body.classList.add('animado');
+
+    // Reveal on scroll con IntersectionObserver
+    if ('IntersectionObserver' in window) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('oculto'));
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            // Delay escalonado para elementos hermanos
+            const siblings = [...e.target.parentElement.querySelectorAll('.reveal.oculto')];
+            const idx = siblings.indexOf(e.target);
+            setTimeout(() => {
+              e.target.classList.remove('oculto');
+            }, idx * 80);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    }
+  });
+});
+
+// Menú hamburguesa
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+document.querySelectorAll('.mlink').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Reveal on scroll: manejado arriba en window.load
+
+// Tilt 3D solo en desktop
+if (!('ontouchstart' in window)) {
+  document.querySelectorAll('.prod-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+</script>
+</body>
+</html>

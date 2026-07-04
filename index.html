@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miguel Sánchez — Desarrollo Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #050806;
+    --bg-panel: #0B120E;
+    --line: rgba(46,255,143,0.14);
+    --line-soft: rgba(46,255,143,0.07);
+    --green: #2CFF7E;
+    --green-dim: #1B8F4C;
+    --green-glow: rgba(44,255,126,0.35);
+    --white: #F2F6F3;
+    --muted: #7C9182;
+    --muted-2: #445248;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color: var(--white);
+    font-family:'Rajdhani', sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--green); color:#000;}
+
+  /* circuit background */
+  body::before{
+    content:'';
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 90%);
+            mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+  .font-display{font-family:'Orbitron', sans-serif;}
+
+  /* header */
+  header{padding:26px 0;}
+  .nav{display:flex; justify-content:space-between; align-items:center;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand img{width:40px; height:40px; border-radius:50%; box-shadow:0 0 18px var(--green-glow);}
+  .brand-text{font-family:'Orbitron', sans-serif; font-size:13px; letter-spacing:.08em;}
+  .brand-text b{color:var(--white); display:block; font-weight:700;}
+  .brand-text span{color:var(--green); font-size:10px; letter-spacing:.14em;}
+  .nav-links{display:flex; gap:30px; font-family:'Rajdhani', sans-serif; font-weight:600; font-size:14px; letter-spacing:.04em;}
+  .nav-links a{color:var(--muted); text-decoration:none; transition:color .15s ease;}
+  .nav-links a:hover{color:var(--green);}
+  @media(max-width:640px){ .nav-links{display:none;} }
+
+  /* hero */
+  .hero{
+    padding:70px 0 60px; display:grid; grid-template-columns:1fr auto; gap:50px; align-items:center;
+  }
+  @media(max-width:840px){ .hero{grid-template-columns:1fr; text-align:center;} .hero-logo{order:-1; margin:0 auto;} }
+
+  .eyebrow{
+    font-family:'Orbitron', sans-serif; font-size:11px; letter-spacing:.22em;
+    color:var(--green); text-transform:uppercase; margin-bottom:24px;
+    display:flex; align-items:center; gap:10px;
+  }
+  @media(max-width:840px){ .eyebrow{justify-content:center;} }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--green); box-shadow:0 0 8px var(--green);}
+
+  h1{
+    font-family:'Orbitron', sans-serif;
+    font-size:clamp(30px, 4.6vw, 54px);
+    font-weight:800; letter-spacing:-0.01em; line-height:1.16;
+    color:#fff; text-transform:uppercase;
+  }
+  h1 .accent{color:var(--green); text-shadow:0 0 22px var(--green-glow);}
+
+  .hero-sub{
+    max-width:540px; margin-top:22px; color:var(--muted); font-size:18px; line-height:1.6; font-weight:500;
+  }
+  @media(max-width:840px){ .hero-sub{margin-left:auto; margin-right:auto;} }
+
+  .hero-logo{
+    width:230px; height:230px; border-radius:50%; object-fit:cover;
+    box-shadow:0 0 60px var(--green-glow), 0 0 0 1px var(--line);
+    flex-shrink:0;
+  }
+
+  /* stat strip */
+  .stats{
+    margin-top:50px; display:flex; gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  @media(max-width:840px){ .stats{justify-content:center; flex-wrap:wrap;} }
+  .stat{padding:20px 34px 20px 0; border-right:1px solid var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat-val{font-family:'Orbitron', sans-serif; font-size:28px; font-weight:700; color:var(--green); text-shadow:0 0 14px var(--green-glow);}
+  .stat-label{font-size:12px; color:var(--muted); letter-spacing:.06em; margin-top:4px; text-transform:uppercase; font-weight:600;}
+
+  /* section label */
+  .section-label{
+    font-family:'Orbitron', sans-serif; font-size:12px; letter-spacing:.18em;
+    color:var(--muted); text-transform:uppercase; margin:100px 0 34px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .section-label::after{content:''; flex:1; height:1px; background:var(--line);}
+
+  /* project grid */
+  .grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:20px;}
+  @media(max-width:760px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--bg-panel); border:1px solid var(--line);
+    display:flex; flex-direction:column; position:relative; overflow:hidden;
+    transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  .card:hover{border-color:var(--green); box-shadow:0 0 30px rgba(44,255,126,0.12); transform:translateY(-3px);}
+  .card::before{
+    content:''; position:absolute; top:0; left:0; width:100%; height:2px;
+    background:linear-gradient(90deg, var(--green), transparent);
+    opacity:0; transition:opacity .2s ease;
+  }
+  .card:hover::before{opacity:1;}
+
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; padding:22px 22px 0;}
+  .tag{
+    font-family:'Orbitron', sans-serif; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--green); border:1px solid var(--green-dim); padding:5px 10px; background:rgba(44,255,126,0.06);
+  }
+  .card-id{font-family:'Orbitron', sans-serif; font-size:10px; color:var(--muted-2);}
+  .card-body{padding:18px 22px 22px;}
+  .card-title{font-family:'Rajdhani', sans-serif; font-size:22px; font-weight:700; color:#fff; margin-bottom:8px; letter-spacing:.01em;}
+  .card-desc{font-size:15px; color:var(--muted); line-height:1.55; font-weight:500;}
+  .card-foot{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 22px; border-top:1px solid var(--line);
+    font-family:'Orbitron', sans-serif; font-size:11px;
+  }
+  .card-foot .stack{color:var(--muted-2); letter-spacing:.03em;}
+  .card-foot a{color:var(--white); text-decoration:none; letter-spacing:.05em; display:flex; align-items:center; gap:7px;}
+  .card-foot a:hover{color:var(--green);}
+  .card-foot a::after{content:'▸'; transition:transform .15s ease; color:var(--green);}
+  .card-foot a:hover::after{transform:translateX(3px);}
+
+  /* about */
+  .about{margin-top:100px; display:grid; grid-template-columns:1.1fr 1fr; gap:60px;}
+  @media(max-width:760px){ .about{grid-template-columns:1fr; gap:36px;} }
+  .about p{color:var(--muted); font-size:16px; line-height:1.7; margin-bottom:16px; font-weight:500;}
+  .stack-list{list-style:none;}
+  .stack-list li{
+    font-family:'Orbitron', sans-serif; font-size:12px; color:var(--white);
+    padding:13px 0; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; letter-spacing:.03em;
+  }
+  .stack-list li span{color:var(--green);}
+
+  /* footer */
+  footer{margin:110px 0 40px;}
+  .contact-box{
+    border:1px solid var(--green-dim); padding:44px; position:relative;
+    background:radial-gradient(ellipse at top left, rgba(44,255,126,0.06), transparent 60%);
+  }
+  .contact-head{
+    font-family:'Orbitron', sans-serif; font-size:clamp(22px,3vw,32px); font-weight:700;
+    color:#fff; max-width:560px; text-transform:uppercase; line-height:1.3;
+  }
+  .contact-head .accent{color:var(--green); text-shadow:0 0 16px var(--green-glow);}
+  .contact-links{margin-top:28px; display:flex; gap:40px; flex-wrap:wrap;}
+  .contact-links a{
+    color:var(--white); text-decoration:none; font-family:'Rajdhani', sans-serif; font-weight:600; font-size:16px;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .contact-links a span:first-child{
+    color:var(--green); font-family:'Orbitron', sans-serif; font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  }
+  .contact-links a:hover span:last-child{color:var(--green);}
+  .foot-bottom{
+    margin-top:50px; display:flex; justify-content:space-between; padding-top:20px;
+    border-top:1px solid var(--line); font-family:'Orbitron', sans-serif; font-size:10px; color:var(--muted-2);
+    letter-spacing:.05em; flex-wrap:wrap; gap:10px;
+  }
+</style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2359637854445365');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2359637854445365&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <img src="assets/logo-circulo.jpeg" alt="MS logo">
+        <div class="brand-text"><b>MIGUEL SANCHEZ</b><span>DESARROLLO WEB</span></div>
+      </div>
+      <nav class="nav-links">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#stack">Stack</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Portfolio de proyectos</div>
+      <h1>Sistemas a medida para negocios que <span class="accent">necesitan resolver</span> algo real.</h1>
+      <p class="hero-sub">Diseño y construyo sitios web y sistemas de gestión — ventas, stock, turnos, torneos, expedientes — para comercios y profesionales que hoy resuelven todo eso a mano.</p>
+    </div>
+    <img class="hero-logo" src="assets/logo-circulo.jpeg" alt="Miguel Sanchez">
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">10</div><div class="stat-label">Sistemas entregados</div></div>
+    <div class="stat"><div class="stat-val">7</div><div class="stat-label">Rubros distintos</div></div>
+    <div class="stat"><div class="stat-val">100%</div><div class="stat-label">En uso real</div></div>
+  </div>
+
+  <div class="section-label" id="proyectos">Proyectos</div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sistema de gestión</span><span class="card-id">01</span></div>
+      <div class="card-body">
+        <div class="card-title">Bertoya · Estudio Jurídico</div>
+        <p class="card-desc">Gestión de expedientes, clientes, agenda, honorarios y facturación para un estudio jurídico, con emisión de facturas con los datos reales del estudio.</p>
+      </div>
+      <div class="card-foot"><span class="stack">NEXT.JS · SUPABASE</span><a href="proyectos/bertoya-demo.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sistema de gestión</span><span class="card-id">02</span></div>
+      <div class="card-body">
+        <div class="card-title">Lexia · Estudio Jurídico</div>
+        <p class="card-desc">Otra versión de sistema de gestión para abogados, con enfoque en organización de causas y seguimiento de clientes.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · JS</span><a href="proyectos/lexia-juridico.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Punto de venta</span><span class="card-id">03</span></div>
+      <div class="card-body">
+        <div class="card-title">Efecto Pádel Sport · POS</div>
+        <p class="card-desc">Sistema de ventas y control de stock para una tienda de indumentaria deportiva: carga de productos, ventas rápidas y control de inventario en tiempo real.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · JS</span><a href="proyectos/efecto-padel-pos.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Punto de venta</span><span class="card-id">04</span></div>
+      <div class="card-body">
+        <div class="card-title">Sistema de Ventas · Kiosco</div>
+        <p class="card-desc">POS pensado para kioscos: registro ágil de ventas, caja diaria y control de stock, con una interfaz simple para uso del día a día.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · JS</span><a href="proyectos/sistema-ventas-kiosco.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sistema de gestión</span><span class="card-id">05</span></div>
+      <div class="card-body">
+        <div class="card-title">Macha Pádel · Torneos</div>
+        <p class="card-desc">Organización de torneos de pádel: inscripción de parejas, armado de zonas y llaves, y seguimiento de resultados en un solo lugar.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · JS</span><a href="proyectos/macha-padel.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sistema de gestión</span><span class="card-id">06</span></div>
+      <div class="card-body">
+        <div class="card-title">Victoria Pádel · Torneos</div>
+        <p class="card-desc">Otra versión de sistema de gestión de torneos, con foco en la inscripción de jugadores y la publicación de fixtures.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · JS</span><a href="proyectos/victoria-padel.html" target="_blank">VER SISTEMA</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sitio web</span><span class="card-id">07</span></div>
+      <div class="card-body">
+        <div class="card-title">Distrito · Streetwear</div>
+        <p class="card-desc">Sitio de una marca de indumentaria urbana, con catálogo de productos y estética propia de streetwear argentino.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · CSS</span><a href="proyectos/distrito-store.html" target="_blank">VER SITIO</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sitio web</span><span class="card-id">08</span></div>
+      <div class="card-body">
+        <div class="card-title">Óptica San José</div>
+        <p class="card-desc">Sitio institucional para una óptica: presentación de servicios, productos destacados y datos de contacto para agendar turno.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · CSS</span><a href="proyectos/optica-san-jose.html" target="_blank">VER SITIO</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sitio web</span><span class="card-id">09</span></div>
+      <div class="card-body">
+        <div class="card-title">Brisa & Belén · Carnicería</div>
+        <p class="card-desc">Página para una despensa y carnicería de barrio, pensada para mostrar productos y horarios y facilitar el pedido por WhatsApp.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · CSS</span><a href="proyectos/brisa-belen.html" target="_blank">VER SITIO</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top"><span class="tag">Sitio web</span><span class="card-id">10</span></div>
+      <div class="card-body">
+        <div class="card-title">LF Muebles de Algarrobo</div>
+        <p class="card-desc">Catálogo web para una mueblería, mostrando productos en madera de algarrobo con fotos y consulta directa por WhatsApp.</p>
+      </div>
+      <div class="card-foot"><span class="stack">HTML · CSS</span><a href="proyectos/florencio-muebles.html" target="_blank">VER SITIO</a></div>
+    </div>
+
+  </div>
+
+  <section class="about" id="stack">
+    <div>
+      <div class="section-label" style="margin-top:0;">Cómo trabajo</div>
+      <p>Cada proyecto arranca por entender qué hace hoy el negocio a mano o con planillas sueltas, y qué le haría ganar tiempo real. No vendo plantillas: construyo el sistema alrededor de cómo trabaja cada cliente.</p>
+      <p>Uso bases de datos reales (no datos de prueba que se pierden al recargar), y dejo cada sistema funcionando en producción, accesible desde cualquier navegador, sin instalar nada.</p>
+    </div>
+    <div>
+      <div class="section-label" style="margin-top:0;">Stack</div>
+      <ul class="stack-list">
+        <li>Frontend <span>HTML · CSS · JS · Next.js</span></li>
+        <li>Base de datos <span>Supabase</span></li>
+        <li>Hosting <span>Vercel</span></li>
+        <li>Diseño <span>A medida por rubro</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer id="contacto">
+    <div class="contact-box">
+      <div class="contact-head">¿Tenés un negocio que todavía se maneja <span class="accent">a mano</span>? Hablemos.</div>
+      <div class="contact-links">
+        <a href="https://wa.me/543734418970" target="_blank"><span>WhatsApp</span><span>+54 3734 41-8970</span></a>
+        <a href="mailto:migueloco299@gmail.com"><span>Email</span><span>migueloco299@gmail.com</span></a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>MIGUEL SÁNCHEZ — DESARROLLO WEB</span>
+      <span>CHACO, ARGENTINA</span>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
